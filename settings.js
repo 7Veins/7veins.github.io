@@ -3,8 +3,9 @@
    Change only the text inside the quotes (or the numbers).
    Keep the commas and quote marks. Save, and every page updates. */
 var SETTINGS = {
-  brand: "Warp Desk",
+  brand: "7veins",
   email: "rahatkhanturzo@gmail.com",
+  formEndpoint: "https://formspree.io/f/mwloqdjl",                   /* paste your Formspree form address here, e.g. "https://formspree.io/f/abcdwxyz" */
   whatsapp: "",                       /* add a number, e.g. "+8801XXXXXXXXX", to show it */
   linkedinUrl: "https://www.linkedin.com/in/engr-rahat-khan-050240123/",
   linkedinText: "Rahat Khan",
