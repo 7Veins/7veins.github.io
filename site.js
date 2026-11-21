@@ -30,18 +30,17 @@
       var all=Array.prototype.slice.call(document.querySelectorAll(sel));
       var set=new Set(all);
       var atoms=all.filter(function(el){var p=el.parentElement;while(p){if(set.has(p))return false;p=p.parentElement;}return true;});
-      function cleanup(el,d){setTimeout(function(){el.classList.remove('rv','in');el.style.transitionDelay='';},d+1100);}
+      function cleanup(el,d){setTimeout(function(){el.classList.remove('rv','go');el.style.animationDelay='';},d+1100);}
       var io=new IntersectionObserver(function(es){
         var n=0;
-        es.forEach(function(e){if(e.isIntersecting){e.target.style.transitionDelay=(n*90)+'ms';n++;e.target.classList.add('in');cleanup(e.target,n*90);io.unobserve(e.target);}});
+        es.forEach(function(e){if(e.isIntersecting){e.target.style.animationDelay=(n*90)+'ms';e.target.classList.add('go');cleanup(e.target,n*90);n++;io.unobserve(e.target);}});
       },{threshold:0.1});
-      var firstBatch=[],n0=0,vh=window.innerHeight;
+      var n0=0,vh=window.innerHeight;
       atoms.forEach(function(el){
         el.classList.add('rv');
-        if(el.getBoundingClientRect().top<vh*0.98){el.style.transitionDelay=Math.min(n0*85,1500)+'ms';n0++;firstBatch.push(el);}
+        if(el.getBoundingClientRect().top<vh*0.98){var dl=Math.min(n0*85,1500);el.style.animationDelay=dl+'ms';el.classList.add('go');cleanup(el,dl);n0++;}
         else io.observe(el);
       });
-      requestAnimationFrame(function(){requestAnimationFrame(function(){firstBatch.forEach(function(el){el.classList.add('in');cleanup(el,parseInt(el.style.transitionDelay)||0);});});});
     }
   }finally{root.classList.add('ready');}
   function countUp(el,to,fmt){
