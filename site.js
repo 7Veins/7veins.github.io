@@ -2,7 +2,7 @@
 (function(){
   var S=SETTINGS;
   var file=(location.pathname.split('/').pop()||'index.html');
-  var pages=[["index.html","Home"],["how-it-works.html","How it works"],["terms.html","Terms"],["faq.html","FAQ"]];
+  var pages=[["index.html","Home"],["about.html","About us"],["services.html","Our services"],["how-it-works.html","How it works"],["terms.html","Terms"],["faq.html","FAQ"]];
   var navHtml='';
   pages.forEach(function(p){navHtml+='<a href="'+p[0]+'"'+(p[0]===file?' class="active" aria-current="page"':'')+'>'+p[1]+'</a>';});
   navHtml+='<a class="btn" href="contact.html">Get a costing</a>';
@@ -12,7 +12,7 @@
   if(f){f.innerHTML='&copy; '+new Date().getFullYear()+' <span data-s="brand"></span>. Cost figures shown on this site are illustrative. Contact: <span data-s="email"></span>';}
 
   var els=document.querySelectorAll('[data-s]');
-  for(var k=0;k<els.length;k++){var val=S[els[k].getAttribute('data-s')];if(typeof val==='number')val=val.toLocaleString('en-US');els[k].textContent=val;}
+  for(var k=0;k<els.length;k++){var val=S[els[k].getAttribute('data-s')];if(val===undefined)val='';if(typeof val==='number')val=val.toLocaleString('en-US');els[k].textContent=val;}
   var logo=document.getElementById('logo');
   if(logo){
     if(S.brand.indexOf(' ')>0){var parts=S.brand.split(' ');logo.textContent=parts[0];var sp=document.createElement('span');sp.textContent=' '+parts.slice(1).join(' ');logo.appendChild(sp);}
@@ -22,22 +22,33 @@
   var hdr=document.getElementById('site-header');
   function onScroll(){if(hdr)hdr.classList.toggle('scrolled',window.scrollY>8);}
   window.addEventListener('scroll',onScroll,{passive:true});onScroll();
-  if(motion&&'IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.12});
-    var items=document.querySelectorAll('section .eyebrow,section h2,.grid4>div,.linkcards>a,.steps li,.two>div,section details,.endcta');
-    for(var m=0;m<items.length;m++){var el=items[m];
-      if(el.getBoundingClientRect().top>window.innerHeight*0.95){
+  var fnd=document.getElementById('founder');if(fnd)fnd.hidden=!S.founderName;
+  var root=document.documentElement;
+  try{
+    if(motion&&'IntersectionObserver' in window){
+      var sel='main .eyebrow,main h1,main h2,main .lead,main .cta,main .facts,main .sheet,main .grid4>div,main .linkcards>a,main .steps li,main .terms tr,main .svc tbody tr,main .fit>*,main .form>div,main details,main .endcta,main .contact,main .two>div>h3,main .two>div>ol,main .row,main section>p';
+      var all=Array.prototype.slice.call(document.querySelectorAll(sel));
+      var set=new Set(all);
+      var atoms=all.filter(function(el){var p=el.parentElement;while(p){if(set.has(p))return false;p=p.parentElement;}return true;});
+      function cleanup(el,d){setTimeout(function(){el.classList.remove('rv','in');el.style.transitionDelay='';},d+1100);}
+      var io=new IntersectionObserver(function(es){
+        var n=0;
+        es.forEach(function(e){if(e.isIntersecting){e.target.style.transitionDelay=(n*90)+'ms';n++;e.target.classList.add('in');cleanup(e.target,n*90);io.unobserve(e.target);}});
+      },{threshold:0.1});
+      var firstBatch=[],n0=0,vh=window.innerHeight;
+      atoms.forEach(function(el){
         el.classList.add('rv');
-        el.style.transitionDelay=((Array.prototype.indexOf.call(el.parentNode.children,el)%4)*70)+'ms';
-        io.observe(el);
-      }
+        if(el.getBoundingClientRect().top<vh*0.98){el.style.transitionDelay=Math.min(n0*85,1500)+'ms';n0++;firstBatch.push(el);}
+        else io.observe(el);
+      });
+      requestAnimationFrame(function(){requestAnimationFrame(function(){firstBatch.forEach(function(el){el.classList.add('in');cleanup(el,parseInt(el.style.transitionDelay)||0);});});});
     }
-  }
+  }finally{root.classList.add('ready');}
   function countUp(el,to,fmt){
     if(!motion){el.textContent=fmt(to);return;}
     el.textContent=fmt(0);var t0=null,dur=1100;
     function step(ts){if(t0===null)t0=ts;var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=fmt(to*e);if(p<1)requestAnimationFrame(step);}
-    setTimeout(function(){requestAnimationFrame(step);},700);
+    setTimeout(function(){requestAnimationFrame(step);},1100);
   }
   var li=document.getElementById('li');if(li){li.href=S.linkedinUrl;li.textContent=S.linkedinText;}
   var wa=document.getElementById('wa');if(wa)wa.hidden=!S.whatsapp;

@@ -105,7 +105,7 @@ footer{padding-block:28px 40px;border-top:1px solid var(--line);font-size:.85rem
 .pagehead h1{font-size:clamp(1.9rem,4.2vw,2.7rem)}
 .pagehead .lead{margin-top:14px;color:var(--muted);font-size:1.08rem;max-width:36em}
 .pagehead+section{border-top:0}
-.linkcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.linkcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:24px}
 a.card{display:block;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:18px;text-decoration:none;color:inherit;min-width:0}
 a.card:hover,a.card:focus-visible{border-color:var(--accent)}
 a.card p{color:var(--muted);margin-top:6px;font-size:.93rem}
@@ -127,21 +127,23 @@ nav a:not(.btn):hover::after,nav a:not(.btn):focus-visible::after,nav a.active::
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @keyframes draw{to{stroke-dashoffset:0}}
   @keyframes rowin{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
-  .hero .eyebrow,.hero h1,.hero .lead,.hero .cta,.hero .facts,.hero .sheet,.pagehead>*{animation:rise .75s cubic-bezier(.2,.7,.2,1) both}
-  .hero .eyebrow,.pagehead .eyebrow{animation-delay:.05s}
-  .hero h1,.pagehead h1{animation-delay:.15s}
-  .hero .lead,.pagehead .lead{animation-delay:.28s}
-  .hero .cta{animation-delay:.4s}
-  .hero .facts{animation-delay:.52s}
-  .hero .sheet{animation-delay:.35s}
   .veins path{stroke-dashoffset:1;animation:draw 2.6s cubic-bezier(.4,0,.2,1) forwards;animation-delay:calc(var(--d,0)*1s)}
-  .sheet tbody tr{animation:rowin .5s ease both;animation-delay:calc(.7s + var(--i,0)*.09s)}
+  .sheet tbody tr{animation:rowin .5s ease both;animation-delay:calc(1s + var(--i,0)*.09s)}
   .rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
   .rv.in{opacity:1;transform:none}
   .btn{transition:transform .18s ease,filter .18s ease}
   .btn:hover{transform:translateY(-2px)}
   a.card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+  a.card.rv{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
   a.card:hover,a.card:focus-visible{transform:translateY(-4px);box-shadow:0 16px 30px -22px rgba(0,0,0,.5)}
   nav a:not(.btn)::after{transition:transform .25s ease}
   header.top{transition:box-shadow .25s ease}
 }
+
+html.m main{opacity:0;animation:showmain 0s 2.5s forwards}
+html.m.ready main{opacity:1;animation:none}
+@keyframes showmain{to{opacity:1}}
+.svc td:first-child{font-weight:600;width:22%}
+.svc td:last-child{width:28%;color:var(--muted)}
+.grid4.three{grid-template-columns:repeat(3,1fr)}
+@media (max-width:860px){.grid4.three{grid-template-columns:1fr}}
