@@ -55,7 +55,7 @@
 
   var track=document.getElementById('track');
   if(track){
-    var slidesCfg=S.heroSlides||[["images/yarn.svg","Yarn store"],["images/knitting.svg","Knitting"],["images/fabric.svg","Fabric rolls"],["images/finishing.svg","Finishing"]];
+    var slidesCfg=S.heroSlides||[["images/photo1.jpg","Factory floor"],["images/photo2.jpg","Fabric swatches"],["images/photo4.jpg","Fabric sourcing"],["images/photo3.jpg","Packing"],["images/photo5.jpg","Finished garments"]];
     var n=slidesCfg.length,idx=0,timer=null,busy=false;
     var cap=document.getElementById('cap'),dotsEl=document.getElementById('dots'),dots=[];
     function mkSlide(src){var d=document.createElement('div');d.className='slide';var im=document.createElement('img');im.src=src;im.alt='';im.decoding='async';d.appendChild(im);return d;}
