@@ -30,7 +30,7 @@ var SETTINGS = {
     ["Factory overhead and margin", 0.90]
   ],
   fobPort: "FOB Chattogram",
-emailjsServiceId: "service_4fi8edb",
+emailjsServiceId: "service_nec1r2o",
 emailjsTemplateId: "template_wzc48wk",
 emailjsPublicKey: "_k6i43C8VfcvNwHvV",
 };
