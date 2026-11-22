@@ -29,5 +29,8 @@ var SETTINGS = {
     ["Packing", 0.20],
     ["Factory overhead and margin", 0.90]
   ],
-  fobPort: "FOB Chattogram"
+  fobPort: "FOB Chattogram",
+emailjsServiceId: "service_4fi8edb",
+emailjsTemplateId: "template_wzc48wk",
+emailjsPublicKey: "_k6i43C8VfcvNwHvV",
 };
