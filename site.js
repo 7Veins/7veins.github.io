@@ -138,7 +138,7 @@
   /* Vein lines under the hero, drawn progressively as the page scrolls */
   (function(){
     var hero=document.getElementById('hero'),main=document.querySelector('main');
-    if(!hero||!main)return;
+    if(!main)return;
     var NS='http://www.w3.org/2000/svg',svg,paths=[],H=0,W=0,top=0,raf=0;
     function rng(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};}
     function pt(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}
@@ -158,7 +158,7 @@
     }
     function build(){
       if(svg&&svg.parentNode)svg.parentNode.removeChild(svg);
-      paths=[];W=main.clientWidth;top=hero.offsetTop+hero.offsetHeight;H=main.clientHeight-top;
+      paths=[];W=main.clientWidth;top=hero?hero.offsetTop+hero.offsetHeight:0;H=main.clientHeight-top;
       if(H<200)return;
       svg=document.createElementNS(NS,'svg');svg.setAttribute('class','vein-bg');svg.setAttribute('aria-hidden','true');
       svg.setAttribute('width',W);svg.setAttribute('height',H);svg.style.top=top+'px';

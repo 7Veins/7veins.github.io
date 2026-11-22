@@ -188,4 +188,4 @@ body{overflow-x:clip}
 main{position:relative}
 .vein-bg{position:absolute;left:0;width:100%;pointer-events:none;z-index:0;overflow:visible}
 .vein-bg .vn{fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0}
-main>section{position:relative;z-index:1}
+main>*:not(.vein-bg){position:relative;z-index:1}
