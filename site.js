@@ -123,12 +123,14 @@
       var email=v('f-email');
       if(!v('f-brand')||!v('f-name')||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)||!(parseFloat(v('f-qty'))>0)){st.textContent='Please fill in brand, your name, a valid email and the quantity.';return;}
       if(document.getElementById('f-gotcha').value){return;}
-      var d=new Date(),ref='WD-'+d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2)+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+      var d=new Date(),ref='7V-'+d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2)+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
       var payload={order_ref:ref,_subject:'New costing request '+ref+' from '+v('f-brand'),brand:v('f-brand'),contact_name:v('f-name'),email:email,style:v('f-style'),quantity_per_style:v('f-qty'),target_fob_usd:v('f-fob')||'-',delivery_needed_by:v('f-date')||'-',fibre_and_certification:v('f-fibre')||'-',notes:v('f-notes')||'-'};
       send.disabled=true;st.textContent='Sending...';
       fetch(S.formEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
         .then(function(r){if(!r.ok)throw new Error('bad');
-          st.textContent='Sent. Your reference is '+ref+'. Expect a reply by email within '+S.costingTime+'.';
+          var rc=S.emailjsServiceId&&S.emailjsTemplateId&&S.emailjsPublicKey;
+          if(rc){try{fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:S.emailjsServiceId,template_id:S.emailjsTemplateId,user_id:S.emailjsPublicKey,template_params:{to_email:email,to_name:payload.contact_name,order_ref:ref,brand:payload.brand,style:payload.style,quantity:payload.quantity_per_style,target_fob:payload.target_fob_usd,delivery:payload.delivery_needed_by,fibre:payload.fibre_and_certification,notes:payload.notes,submitted:d.toUTCString(),reply_window:S.costingTime,company:S.brand,support_email:S.email}})}).catch(function(){});}catch(e){}}
+          st.textContent='Sent. Your reference is '+ref+'.'+(rc?' A receipt is on its way to '+email+'.':'')+' Expect a reply by email within '+S.costingTime+'.';
           ['f-brand','f-name','f-email','f-fob','f-date','f-fibre','f-notes'].forEach(function(id){document.getElementById(id).value='';});
           send.disabled=false;})
         .catch(function(){st.textContent='Could not send. Please email '+S.email+' instead.';send.disabled=false;});
